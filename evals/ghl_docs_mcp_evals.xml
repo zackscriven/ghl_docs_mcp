@@ -1,0 +1,54 @@
+<!--
+  Evaluation set for ghl_docs_mcp (mcp-builder Phase 4).
+
+  Run these against an LLM that has ONLY this MCP server connected, with
+  GHL_DOCS_CORPUS_ROOT pointing at the real Product/PracticeOS/GHL corpus.
+  All questions are read-only, independent, and stable; each answer is a single
+  string verified 2026-07-13 directly against the corpus source documents
+  (the cloned GoHighLevel API v2 docs under Github Repo/highlevel-api-docs — the
+  contacts, objects, and OAuth references — plus the PPC applied object model,
+  insurer seed, and GHL object/field registry). Each question is phrased so that
+  namespace='auto' routes it to the right layer.
+-->
+<evaluation>
+  <qa_pair>
+    <question>In the GoHighLevel Contacts API v3 OpenAPI spec, one operation upserts a contact (create-or-update in a single call). What is that operation's operationId?</question>
+    <answer>upsert-contact</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the GoHighLevel Contacts API v3 OpenAPI spec, what is the operationId of the advanced contact search operation?</question>
+    <answer>search-contacts-advanced</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the GoHighLevel Custom Objects (objects) v3 API spec, what is the operationId of the operation that creates a custom object schema?</question>
+    <answer>create-custom-object-schema</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the GoHighLevel Custom Objects (objects) v3 API spec, what operationId retrieves a custom object schema by its key?</question>
+    <answer>get-object-schema-by-key</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Per the GoHighLevel OAuth Scopes reference, which OAuth scope authorizes creating a calendar (POST /calendars/)?</question>
+    <answer>calendars.write</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the PPC GHL object model, which custom object is the record of historical billing truth — one record per billed date of service?</question>
+    <answer>Billing Submission</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the PPC GHL object model, what is the proposed field key that snapshots the member ID onto a Billing Submission record at submission time?</question>
+    <answer>member_id_snapshot</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the PPC insurer dropdown seed list, which value is recommended as number 1 (top) in the GHL dropdown sort order?</question>
+    <answer>Self-pay / No insurance</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the PPC GHL object model, what is the first CPT code listed in the Contact's Default CPT Code dropdown?</question>
+    <answer>90791</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>In the PPC GHL object and field registry, record_id OBJ-003 corresponds to which GHL standard object?</question>
+    <answer>Company</answer>
+  </qa_pair>
+</evaluation>
