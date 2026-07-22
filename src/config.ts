@@ -199,7 +199,10 @@ export function makeConfig(corpusRoot: string, workspaceRoot: string): CorpusCon
 
 export function resolveConfig(): CorpusConfig {
   const serverRoot = path.resolve(__dirname, "..");
-  const defaultWorkspaceRoot = path.resolve(serverRoot, "..", "..");
+  // MCP_Servers/ moved out to be a sibling of PPC/ under the Extreme SSD root
+  // (2026-07-16 migration) — two levels up from serverRoot lands on the drive
+  // root, so step back into PPC explicitly rather than assuming nesting.
+  const defaultWorkspaceRoot = path.resolve(serverRoot, "..", "..", "PPC");
   const envCorpusRoot = process.env.GHL_DOCS_CORPUS_ROOT;
   const corpusRoot =
     envCorpusRoot ?? path.join(defaultWorkspaceRoot, "Product", "PracticeOS", "GHL");
