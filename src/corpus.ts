@@ -35,6 +35,10 @@ const EXCLUDED_DIRS = new Set([
   "coverage",
   ".cache",
   ".turbo",
+  // 2026-10-28 marketplace bundle: per-endpoint pages duplicate v3/services/*.md
+  // (one file per service is the indexed source); _extract-test is scratch.
+  "pages",
+  "_extract-test",
 ]);
 
 const SECRET_PATTERNS = [

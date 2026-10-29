@@ -64,6 +64,24 @@ export const ROUTING_KEYWORDS: Record<RoutedNamespace, string[]> = {
     "v2",
     "v3",
     "curl",
+    // 2026-10-28: live v3 surface now has first-class APIs for these; keep
+    // bare "workflow"/"course" in help, but API-shaped phrasings route here.
+    "workflow definition",
+    "step types",
+    "workflow api",
+    "courses api",
+    "projects",
+    "spaces",
+    "subtask",
+    "recurring task",
+    "countdown timer",
+    "clientportal",
+    "ai builder",
+    "share link",
+    "changelog",
+    "deprecated",
+    "private integration",
+    "pit",
   ],
   help: [
     "workflow",
@@ -123,9 +141,9 @@ export const APPLIED_BOOST_PATTERN =
 /** Doc names asserted by the real-corpus test suite (kept here so tests stay corpus-agnostic). */
 export const TEST_DOC_NAMES = {
   bigApiSpec: `${API_REPO_PREFIX}apps/v3/contacts-v3.json`,
-  objectModel: "System_Docs/GHL_OBJECT_MODEL.md",
+  objectModel: "Governance/GHL_OBJECT_MODEL.md",
   fieldRegistryCsv:
-    "Product/Private_Practice_CRM/Attribution_API/Schemas/GHL_Object_Field_Registry/2026-06-23_private-practice-crm-ghl-architecture-registry.csv",
+    "PracticeOS/Attribution_API/Schemas/GHL_Object_Field_Registry/2026-06-23_private-practice-crm-ghl-architecture-registry.csv",
 };
 
 /**
@@ -143,15 +161,14 @@ export function buildAppliedSources(workspaceRoot: string): AppliedSource[] {
   const sources: AppliedSource[] = [
     // High-priority: the canonical object model.
     {
-      absPath: inWorkspace("System_Docs", "GHL_OBJECT_MODEL.md"),
+      absPath: inWorkspace("Governance", "GHL_OBJECT_MODEL.md"),
       kind: "markdown",
       priority: "high",
     },
     // High-priority: the field registry (README explains it, CSV holds the rows).
     {
       absPath: inWorkspace(
-        "Product",
-        "Private_Practice_CRM",
+        "PracticeOS",
         "Attribution_API",
         "Schemas",
         "GHL_Object_Field_Registry",
@@ -162,8 +179,7 @@ export function buildAppliedSources(workspaceRoot: string): AppliedSource[] {
     },
     {
       absPath: inWorkspace(
-        "Product",
-        "Private_Practice_CRM",
+        "PracticeOS",
         "Attribution_API",
         "Schemas",
         "GHL_Object_Field_Registry",
@@ -175,7 +191,7 @@ export function buildAppliedSources(workspaceRoot: string): AppliedSource[] {
   ];
 
   // Ordinary applied material: every Build_Specs markdown file (no priority boost).
-  const buildSpecsDir = inWorkspace("Product", "Private_Practice_CRM", "Build_Specs");
+  const buildSpecsDir = inWorkspace("PracticeOS", "Build_Specs");
   try {
     for (const entry of fs.readdirSync(buildSpecsDir)) {
       if (entry.startsWith("._") || !entry.endsWith(".md")) continue;
@@ -199,18 +215,17 @@ export function makeConfig(corpusRoot: string, workspaceRoot: string): CorpusCon
 
 export function resolveConfig(): CorpusConfig {
   const serverRoot = path.resolve(__dirname, "..");
-  // MCP_Servers/ moved out to be a sibling of PPC/ under the Extreme SSD root
-  // (2026-07-16 migration) — two levels up from serverRoot lands on the drive
-  // root, so step back into PPC explicitly rather than assuming nesting.
-  const defaultWorkspaceRoot = path.resolve(serverRoot, "..", "..", "PPC");
+  // MCP_Servers/ lives inside the PPC workspace (/Volumes/PPC/MCP_Servers/…,
+  // confirmed 2026-09-22) — two levels up from serverRoot is the workspace root.
+  const defaultWorkspaceRoot = path.resolve(serverRoot, "..", "..");
   const envCorpusRoot = process.env.GHL_DOCS_CORPUS_ROOT;
   const corpusRoot =
-    envCorpusRoot ?? path.join(defaultWorkspaceRoot, "Product", "PracticeOS", "GHL");
+    envCorpusRoot ?? path.join(defaultWorkspaceRoot, "PracticeOS", "GHL");
 
-  // The workspace is three levels above the corpus (…/Product/PracticeOS/GHL),
-  // so an env-overridden corpus still resolves its applied-context siblings.
+  // The workspace is two levels above the corpus (…/PracticeOS/GHL, post
+  // 2026-09-11 reorg), so an env-overridden corpus still resolves its applied siblings.
   const workspaceRoot = envCorpusRoot
-    ? path.resolve(corpusRoot, "..", "..", "..")
+    ? path.resolve(corpusRoot, "..", "..")
     : defaultWorkspaceRoot;
 
   return makeConfig(corpusRoot, workspaceRoot);
@@ -232,7 +247,7 @@ export function assertCorpusRoot(config: CorpusConfig): void {
     throw new Error(
       `GHL docs corpus root not found at "${config.corpusRoot}". ` +
         `Set the GHL_DOCS_CORPUS_ROOT environment variable to the absolute path of ` +
-        `Product/PracticeOS/GHL (the folder containing "Github Repo/highlevel-api-docs" ` +
+        `PracticeOS/GHL (the folder containing "Github Repo/highlevel-api-docs" ` +
         `and "Help Reference") and restart the server.`,
     );
   }
